@@ -1,21 +1,30 @@
 import { categories } from "../data/categories";
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
+import type { Activity } from "../types";
 
 export default function Form() {
 
-    const [activity, setActivity] = useState({
+    const [activity, setActivity] = useState<Activity>({
         category: 1,
         name: '',
         calories: 0
     })
 
-    const handleChange = (e)=> {
+    const handleChange = (e:  ChangeEvent<HTMLSelectElement | HTMLInputElement>)=> {
+        const isNumberField = ['category', 'calories'].includes(e.target.id);
+
         setActivity({
             ...activity,
-            [e.target.id]: e.target.value
+            [e.target.id]: isNumberField ? +e.target.value : e.target.value
             
         })
     }
+
+    const isValidActivity = () => {
+        const {name, calories} = activity
+        return name.trim() !== '' && calories > 0
+    }
+
 
   return (
     <form className="space-y-5 bg-white p-10 rounded-lg">
@@ -61,8 +70,9 @@ export default function Form() {
         <input 
             type="submit"
             className="bg-gray-800 hover:bg-gray-900 w-full p-2 font-bold uppercase text-white 
-            cursor=pointer"
-            value='Guardar Comida o Guardar Ejercicio'
+            cursor=pointer disabled:opacity-10"
+            value={activity.category === 1 ? 'Agregar Comida' : 'Agregar Ejercicio'}
+            disabled={!isValidActivity()}
             />
     </form>
   )
