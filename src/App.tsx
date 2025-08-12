@@ -1,5 +1,5 @@
 import Form from "./components/Form"
-import { useReducer, type Dispatch } from "react"
+import { useReducer } from "react"
 import { activityReducer, initialState } from "./reducers/activityReducer"
 import ActivityList from "./components/ActivityList"
 
@@ -22,6 +22,7 @@ export default function App() {
       <div className="max-w-4xl mx-auto">
         <Form
           dispatch={dispatch}
+          state={state}
         />
       </div>
     </section>
